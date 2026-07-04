@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XData Soft — Software Development Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1C2B4A;
+    --navy-deep:#101A30;
+    --blue:#3C7DC2;
+    --blue-light:#6FA8DC;
+    --paper:#F7F9FC;
+    --panel:#EDF1F7;
+    --panel-line:#E1E7F0;
+    --ink:#1C2B4A;
+    --slate:#5B6478;
+    --line: rgba(28,43,74,0.10);
+    --line-strong: rgba(28,43,74,0.18);
+    --nav-bg: rgba(247,249,252,0.88);
+    --radius: 10px;
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  html[data-theme="dark"]{
+    --navy:#EDF1F7;
+    --navy-deep:#05070D;
+    --blue:#6FA8DC;
+    --blue-light:#9CC6EA;
+    --paper:#0B0F1A;
+    --panel:#121729;
+    --panel-line:rgba(255,255,255,0.08);
+    --ink:#EDF1F7;
+    --slate:#93A0B8;
+    --line: rgba(237,241,247,0.10);
+    --line-strong: rgba(237,241,247,0.18);
+    --nav-bg: rgba(11,15,26,0.86);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    transition:background .3s ease, color .3s ease;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  section{ padding:96px 0; }
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 28px; }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--blue);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:6px; height:6px; border-radius:50%;
+    background:var(--blue);
+    box-shadow:0 0 0 3px rgba(60,125,194,0.18);
+  }
+  h1,h2,h3{ font-family:var(--display); font-weight:700; letter-spacing:-0.01em; color:var(--navy); }
+  h2{ font-size:clamp(28px,4vw,40px); margin-bottom:16px; }
+  .lede{ color:var(--slate); font-size:17px; max-width:620px; }
+  .btn{
+    font-family:var(--mono);
+    font-size:13.5px;
+    letter-spacing:0.03em;
+    padding:14px 24px;
+    border-radius:8px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    border:1px solid transparent;
+    transition:transform .15s ease, background .2s ease, border-color .2s ease, color .2s ease;
+    white-space:nowrap;
+  }
+  .btn:focus-visible{ outline:2px solid var(--blue); outline-offset:3px; }
+  .btn-primary{ background:var(--navy); color:#fff; font-weight:500; }
+  .btn-primary:hover{ transform:translateY(-1px); background:var(--blue); }
+  .btn-ghost{ border-color:var(--line-strong); color:var(--navy); }
+  .btn-ghost:hover{ border-color:var(--blue); color:var(--blue); }
+  .btn-ghost.on-dark{ border-color:rgba(255,255,255,0.28); color:#fff; }
+  .btn-ghost.on-dark:hover{ border-color:var(--blue-light); color:var(--blue-light); }
+
+  /* ---------- LOGO MARK ---------- */
+  .logo-mark{ width:34px; height:34px; flex-shrink:0; }
+  .logo-lockup{ display:flex; align-items:center; gap:10px; }
+  .wordmark{ font-family:var(--display); font-weight:700; font-size:19px; letter-spacing:-0.01em; color:var(--navy); }
+  .wordmark span{ color:var(--blue); }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:var(--nav-bg);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    transition:background .3s ease;
+  }
+  nav{
+    max-width:1120px; margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-links{ display:flex; gap:34px; font-size:14.5px; }
+  .nav-links a{ color:var(--slate); transition:color .2s ease; }
+  .nav-links a:hover{ color:var(--navy); }
+  .nav-cta{ display:flex; align-items:center; gap:12px; }
+  .nav-toggle{
+    display:none; width:38px; height:38px; border-radius:50%;
+    border:1px solid var(--line-strong); background:var(--panel);
+    align-items:center; justify-content:center; cursor:pointer;
+    color:var(--navy); flex-shrink:0;
+  }
+  .nav-toggle svg{ width:18px; height:18px; }
+
+  .mobile-menu{
+    display:none; flex-direction:column;
+    background:var(--nav-bg); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:6px 28px 22px;
+  }
+  .mobile-menu.open{ display:flex; }
+  .mobile-menu a{
+    padding:14px 2px; font-size:15.5px; color:var(--slate);
+    border-bottom:1px solid var(--panel-line);
+  }
+  .mobile-menu a:hover{ color:var(--navy); }
+  .mobile-menu .btn{ margin-top:16px; justify-content:center; }
+
+  .theme-toggle{
+    width:38px; height:38px; border-radius:50%;
+    border:1px solid var(--line-strong);
+    background:var(--panel);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; flex-shrink:0;
+    transition:border-color .2s ease, background .2s ease, transform .15s ease;
+  }
+  .theme-toggle:hover{ border-color:var(--blue); transform:translateY(-1px); }
+  .theme-toggle:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
+  .theme-toggle svg{ width:18px; height:18px; }
+
+  /* ---------- STATUS STRIP ---------- */
+  .status-strip{
+    background:var(--navy-deep);
+    font-family:var(--mono);
+    font-size:12px;
+    color:rgba(255,255,255,0.6);
+    overflow:hidden;
+  }
+  .status-strip .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:9px 28px; gap:20px; flex-wrap:wrap;
+  }
+  .status-item{ display:flex; align-items:center; gap:8px; white-space:nowrap; }
+  .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--blue-light);
+    box-shadow:0 0 0 3px rgba(111,168,220,0.25);
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:1; }
+    50%{ opacity:0.35; }
+  }
+  #clock{ color:#fff; }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:88px 0 80px; position:relative; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center; }
+  .hero h1{
+    font-size:clamp(34px,5.2vw,56px);
+    line-height:1.06;
+    margin-bottom:22px;
+  }
+  .hero h1 em{ font-style:normal; color:var(--blue); }
+  .hero-actions{ display:flex; gap:14px; margin-top:34px; flex-wrap:wrap; }
+
+  .console{
+    background:var(--navy);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 30px 60px -30px rgba(28,43,74,0.35);
+  }
+  .console-bar{
+    display:flex; gap:7px; padding:12px 14px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    background:var(--navy-deep);
+  }
+  .console-bar span{ width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.16); }
+  .console-body{ padding:22px 20px; font-family:var(--mono); font-size:13px; color:rgba(255,255,255,0.55); }
+  .console-body .line{ margin-bottom:10px; display:flex; gap:10px; }
+  .console-body .k{ color:var(--blue-light); }
+  .console-body .v{ color:#fff; }
+  .console-body .caret{ display:inline-block; width:7px; height:15px; background:var(--blue-light); animation:blink 1s step-end infinite; vertical-align:-2px; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* ---------- SERVICES ---------- */
+  .services{ border-top:1px solid var(--line); background:var(--panel); }
+  .service-list{ display:flex; flex-direction:column; margin-top:44px; }
+  .service-row{
+    display:grid; grid-template-columns:120px 1fr 1.4fr;
+    gap:32px; align-items:start;
+    padding:30px 0;
+    border-top:1px solid var(--panel-line);
+  }
+  .service-row:last-child{ border-bottom:1px solid var(--panel-line); }
+  .service-tag{ font-family:var(--mono); font-size:12.5px; letter-spacing:0.08em; color:var(--blue); padding-top:4px; }
+  .service-row h3{ font-size:21px; }
+  .service-row p{ color:var(--slate); font-size:15px; max-width:480px; }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+  .about-grid .lede{ max-width:none; }
+  .stat-list{ display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:8px; }
+  .stat{ border-top:1px solid var(--line-strong); padding-top:14px; }
+  .stat b{ font-family:var(--display); font-size:30px; display:block; color:var(--navy); }
+  .stat span{ font-size:13px; color:var(--slate); }
+
+  /* ---------- SHIFTS (signature element) ---------- */
+  .shifts{ border-top:1px solid var(--line); }
+  .shift-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:44px; }
+  .shift-card{
+    border-radius:14px; padding:32px;
+    display:flex; flex-direction:column; gap:16px;
+    min-height:220px;
+  }
+  .shift-card.day{ background:var(--panel); border:1px solid var(--panel-line); }
+  .shift-card.night{ background:var(--navy-deep); color:#fff; }
+  .shift-icon{ width:30px; height:30px; }
+  .shift-card h3{ font-size:20px; }
+  .shift-card.night h3{ color:#fff; }
+  .shift-card .hours{ font-family:var(--mono); font-size:13px; letter-spacing:0.03em; }
+  .shift-card.day .hours{ color:var(--blue); }
+  .shift-card.night .hours{ color:var(--blue-light); }
+  .shift-card p{ font-size:14.5px; }
+  .shift-card.day p{ color:var(--slate); }
+  .shift-card.night p{ color:rgba(255,255,255,0.62); }
+  .shift-note{ margin-top:24px; font-family:var(--mono); font-size:12.5px; color:var(--slate); text-align:center; }
+
+  /* ---------- PROCESS ---------- */
+  .process{ border-top:1px solid var(--line); background:var(--panel); }
+  .process-list{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:44px; }
+  .process-step{ border-top:2px solid var(--line-strong); padding-top:18px; }
+  .process-step .num{ font-family:var(--mono); font-size:12.5px; color:var(--blue); display:block; margin-bottom:14px; }
+  .process-step h3{ font-size:18px; margin-bottom:8px; }
+  .process-step p{ color:var(--slate); font-size:14.5px; }
+
+  /* ---------- CONTACT ---------- */
+  .contact{ border-top:1px solid var(--line); }
+  .contact-inner{
+    display:grid; grid-template-columns:1.2fr 1fr; gap:56px; align-items:center;
+  }
+  .contact h2{ font-size:clamp(28px,4vw,42px); }
+  .contact-card{
+    background:var(--navy); color:#fff;
+    border-radius:var(--radius); padding:28px;
+  }
+  .contact-card .row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.12);
+    font-size:14.5px;
+  }
+  .contact-card .row:last-child{ border-bottom:none; }
+  .contact-card .label{ color:rgba(255,255,255,0.55); font-family:var(--mono); font-size:12px; letter-spacing:0.05em; text-transform:uppercase; }
+  .contact-card .value{ color:#fff; font-weight:500; }
+  .contact-card .value:hover{ color:var(--blue-light); }
+
+  footer{
+    background:var(--navy-deep);
+    color:rgba(255,255,255,0.55);
+    padding:56px 0 32px;
+  }
+  .footer-top{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:40px; padding-bottom:36px; border-bottom:1px solid rgba(255,255,255,0.10); }
+  .footer-brand .wordmark{ color:#fff; }
+  .footer-brand .wordmark span{ color:var(--blue-light); }
+  .footer-tagline{ font-family:var(--mono); font-size:11.5px; letter-spacing:0.14em; color:rgba(255,255,255,0.4); margin-top:10px; display:flex; align-items:center; gap:10px; }
+  .footer-tagline .rule{ width:20px; height:1px; background:rgba(255,255,255,0.25); }
+  .footer-links{ display:flex; gap:56px; flex-wrap:wrap; }
+  .footer-col h4{ font-family:var(--mono); font-size:11.5px; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:14px; }
+  .footer-col a, .footer-col span{ display:block; font-size:14px; color:rgba(255,255,255,0.75); margin-bottom:10px; }
+  .footer-col a:hover{ color:var(--blue-light); }
+  .footer-bottom{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; padding-top:24px; font-size:13px; }
+
+  /* ---------- TECH STACK ---------- */
+  .stack{ border-top:1px solid var(--line); background:var(--panel); }
+  .stack-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:36px; }
+  .stack-pill{
+    font-family:var(--mono); font-size:13px; letter-spacing:0.02em;
+    padding:9px 16px; border-radius:999px;
+    border:1px solid var(--panel-line); background:var(--paper);
+    color:var(--navy); transition:border-color .2s ease, color .2s ease;
+  }
+  .stack-pill:hover{ border-color:var(--blue); color:var(--blue); }
+
+  /* ---------- QUICK CONTACT FORM ---------- */
+  .quick-form{ margin-top:30px; display:flex; flex-direction:column; gap:12px; max-width:520px; }
+  .quick-form label{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--slate);
+  }
+  .quick-form textarea{
+    width:100%; padding:14px 16px; border-radius:8px;
+    border:1px solid var(--line-strong); background:var(--panel);
+    color:var(--ink); font-family:var(--body); font-size:14.5px;
+    resize:vertical; transition:border-color .2s ease;
+  }
+  .quick-form textarea:focus{ outline:none; border-color:var(--blue); }
+  .quick-form-actions{ display:flex; gap:12px; flex-wrap:wrap; }
+
+  @media (max-width:860px){
+    section{ padding:64px 0; }
+    .hero{ padding:48px 0 56px; }
+    .hero-grid, .about-grid, .contact-inner{ grid-template-columns:1fr; }
+    .process-list{ grid-template-columns:1fr 1fr; }
+    .stat-list{ grid-template-columns:1fr 1fr; }
+    .shift-grid{ grid-template-columns:1fr; }
+    .service-row{ grid-template-columns:1fr; gap:8px; }
+    .nav-links{ display:none; }
+    .nav-toggle{ display:flex; }
+    .footer-top{ flex-direction:column; }
+    .footer-links{ gap:36px; }
+  }
+  @media (max-width:480px){
+    section{ padding:52px 0; }
+    .wrap{ padding:0 20px; }
+    .process-list{ grid-template-columns:1fr; }
+    .stat-list{ grid-template-columns:1fr; }
+    .hero-actions .btn{ width:100%; justify-content:center; }
+    .status-strip .status-item:nth-child(2){ display:none; }
+    .nav-cta .btn-primary{ display:none; }
+    .service-tag{ padding-top:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dot, .caret{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo-lockup">
+      <svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true">
+        <g opacity="0.9">
+          <rect x="10" y="46" width="7" height="7" fill="#1C2B4A" opacity="0.35"/>
+          <rect x="20" y="34" width="9" height="9" fill="#1C2B4A" opacity="0.55"/>
+          <rect x="14" y="60" width="8" height="8" fill="#3C7DC2" opacity="0.5"/>
+          <rect x="30" y="46" width="12" height="12" fill="#1C2B4A" opacity="0.85"/>
+          <rect x="22" y="70" width="8" height="8" fill="#3C7DC2" opacity="0.75"/>
+          <rect x="34" y="62" width="10" height="10" fill="#3C7DC2"/>
+        </g>
+        <path d="M40 18 L58 18 L72 40 L86 18 L100 18 L79 50 L100 82 L86 82 L72 60 L58 82 L44 82 L65 50 Z" fill="#1C2B4A"/>
+        <path d="M72 60 L86 82 L100 82 L79 50 Z" fill="#3C7DC2"/>
+      </svg>
+      <div class="wordmark">XDATA<span>SOFT</span></div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#shifts">Shifts</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Switch to night view" type="button"></button>
+      <a class="btn btn-primary" href="https://wa.me/252907144517" target="_blank" rel="noopener">WhatsApp us</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" id="nav-toggle-icon">
+          <line x1="3" y1="7" x2="21" y2="7"/>
+          <line x1="3" y1="14" x2="21" y2="14"/>
+          <line x1="3" y1="21" x2="21" y2="21"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#shifts">Shifts</a>
+    <a href="#contact">Contact</a>
+    <a class="btn btn-primary" href="https://wa.me/252907144517" target="_blank" rel="noopener">Message us on WhatsApp</a>
+  </div>
+</header>
+
+<div class="status-strip">
+  <div class="wrap">
+    <div class="status-item"><span class="dot"></span> ONLINE — DAY &amp; NIGHT SHIFT</div>
+    <div class="status-item">RESPONSE TIME &lt; 1 HOUR</div>
+    <div class="status-item">LOCAL TIME <span id="clock">--:--:--</span></div>
+  </div>
+</div>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">XData Soft — Software Development</div>
+        <h1>We build the software<br>your business <em>runs on.</em></h1>
+        <p class="lede">Web apps, custom software, full systems, and the marketing that gets them in front of customers — built by the XData engineering team, with developers on shift day and night.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://wa.me/252907144517" target="_blank" rel="noopener">Message us on WhatsApp</a>
+          <a class="btn btn-ghost" href="mailto:xdata.lab@gmail.com">Email the team</a>
+        </div>
+      </div>
+      <div class="console" aria-hidden="true">
+        <div class="console-bar"><span></span><span></span><span></span></div>
+        <div class="console-body">
+          <div class="line"><span class="k">$</span><span class="v">xdata-soft --status</span></div>
+          <div class="line"><span class="k">team</span><span class="v">senior full-stack developers</span></div>
+          <div class="line"><span class="k">builds</span><span class="v">web apps · software · systems · marketing</span></div>
+          <div class="line"><span class="k">shifts</span><span class="v">day + night, always covered</span></div>
+          <div class="line"><span class="k">status</span><span class="v">ready to start<span class="caret"></span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <div class="wrap">
+      <div class="eyebrow">What we build</div>
+      <h2>One team, everything you need shipped.</h2>
+      <p class="lede">From the site your customers see to the systems running quietly behind it, and the marketing that brings people in — we build and run the whole stack.</p>
+
+      <div class="service-list">
+        <div class="service-row">
+          <div class="service-tag">WEB</div>
+          <h3>Web Applications</h3>
+          <p>Marketing sites, dashboards, e-commerce, and customer portals — fast, responsive, and built with modern JavaScript.</p>
+        </div>
+        <div class="service-row">
+          <div class="service-tag">SOFTWARE</div>
+          <h3>Custom Software</h3>
+          <p>Business software built around how your team actually works, not the other way around.</p>
+        </div>
+        <div class="service-row">
+          <div class="service-tag">SYSTEMS</div>
+          <h3>Systems &amp; Integrations</h3>
+          <p>Backends, APIs, databases, and automations that connect your tools and keep data moving reliably.</p>
+        </div>
+        <div class="service-row">
+          <div class="service-tag">MARKETING</div>
+          <h3>Digital Marketing</h3>
+          <p>SEO, social media management, and ad campaigns that bring customers to the software we build you.</p>
+        </div>
+        <div class="service-row">
+          <div class="service-tag">SUPPORT</div>
+          <h3>Day &amp; Night Support</h3>
+          <p>A team on shift around the clock for fixes, updates, and anything urgent — no waiting until Monday.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stack">
+    <div class="wrap">
+      <div class="eyebrow">Tech Stack</div>
+      <h2>Tools we build with.</h2>
+      <p class="lede">We pick the right technology for the job, not the trendiest one — a practical stack chosen for reliability and long-term maintenance.</p>
+      <div class="stack-row">
+        <span class="stack-pill">JavaScript</span>
+        <span class="stack-pill">TypeScript</span>
+        <span class="stack-pill">React</span>
+        <span class="stack-pill">Next.js</span>
+        <span class="stack-pill">Node.js</span>
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">PHP</span>
+        <span class="stack-pill">MySQL</span>
+        <span class="stack-pill">PostgreSQL</span>
+        <span class="stack-pill">MongoDB</span>
+        <span class="stack-pill">REST APIs</span>
+        <span class="stack-pill">Docker</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div>
+        <div class="eyebrow">About XData Soft</div>
+        <h2>Built by engineers, backed by research.</h2>
+        <p class="lede">XData Soft is the software development arm of the XData family, working alongside XData Lab — a research and innovation lab focused on AI, cybersecurity, and intelligent systems. That means the software we ship is built by developers who stay close to how these technologies actually work, not just how to wire them together.</p>
+      </div>
+      <div class="stat-list">
+        <div class="stat"><b>2</b><span>Shifts covering 24 hours</span></div>
+        <div class="stat"><b>&lt;1hr</b><span>Typical response time</span></div>
+        <div class="stat"><b>4</b><span>Core practices — web, software, systems, marketing</span></div>
+        <div class="stat"><b>1</b><span>Team, start to support</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shifts" class="shifts">
+    <div class="wrap">
+      <div class="eyebrow">Coverage</div>
+      <h2>Day shift. Night shift. Always someone on.</h2>
+      <p class="lede">We split the day in two so there's always a developer awake and available — whichever time zone you're writing from.</p>
+
+      <div class="shift-grid">
+        <div class="shift-card day">
+          <svg class="shift-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.5" fill="#3C7DC2"/>
+            <g stroke="#3C7DC2" stroke-width="1.6" stroke-linecap="round">
+              <line x1="12" y1="1.5" x2="12" y2="4.5"/>
+              <line x1="12" y1="19.5" x2="12" y2="22.5"/>
+              <line x1="1.5" y1="12" x2="4.5" y2="12"/>
+              <line x1="19.5" y1="12" x2="22.5" y2="12"/>
+              <line x1="4.4" y1="4.4" x2="6.5" y2="6.5"/>
+              <line x1="17.5" y1="17.5" x2="19.6" y2="19.6"/>
+              <line x1="4.4" y1="19.6" x2="6.5" y2="17.5"/>
+              <line x1="17.5" y1="6.5" x2="19.6" y2="4.4"/>
+            </g>
+          </svg>
+          <h3>Day Shift</h3>
+          <div class="hours">08:00 — 20:00</div>
+          <p>Full team online for calls, planning, and active development.</p>
+        </div>
+        <div class="shift-card night">
+          <svg class="shift-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" fill="#6FA8DC"/>
+          </svg>
+          <h3>Night Shift</h3>
+          <div class="hours">20:00 — 08:00</div>
+          <p>On-call developers handle urgent fixes and monitoring overnight.</p>
+        </div>
+      </div>
+      <div class="shift-note">TWO SHIFTS · ONE TEAM · ZERO DOWNTIME</div>
+    </div>
+  </section>
+
+  <section id="process" class="process">
+    <div class="wrap">
+      <div class="eyebrow">How we work</div>
+      <h2>From idea to something running in production.</h2>
+      <div class="process-list">
+        <div class="process-step">
+          <span class="num">01 / DISCOVERY</span>
+          <h3>We listen first</h3>
+          <p>We learn what your business needs before writing a line of code.</p>
+        </div>
+        <div class="process-step">
+          <span class="num">02 / BUILD</span>
+          <h3>Design &amp; development</h3>
+          <p>Our developers design and build in parallel, checking in as we go.</p>
+        </div>
+        <div class="process-step">
+          <span class="num">03 / LAUNCH</span>
+          <h3>Ship it</h3>
+          <p>We launch your web app, software, or system into real use.</p>
+        </div>
+        <div class="process-step">
+          <span class="num">04 / SUPPORT</span>
+          <h3>Stay ready</h3>
+          <p>Day and night shifts keep the team ready for fixes, changes, and growth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap contact-inner">
+      <div>
+        <div class="eyebrow">Get in touch</div>
+        <h2>Have a project in mind?<br>Tell us about it.</h2>
+        <p class="lede">Reach out any time — day shift or night shift, our team is ready.</p>
+        <form class="quick-form" id="quick-form">
+          <label for="qc-message">Quick message</label>
+          <textarea id="qc-message" rows="4" placeholder="Tell us briefly what you'd like built..."></textarea>
+          <div class="quick-form-actions">
+            <button type="button" class="btn btn-primary" id="qc-whatsapp">Send via WhatsApp</button>
+            <button type="button" class="btn btn-ghost" id="qc-email">Send via Email</button>
+          </div>
+        </form>
+      </div>
+      <div class="contact-card">
+        <div class="row">
+          <span class="label">WhatsApp</span>
+          <a class="value" href="https://wa.me/252907144517" target="_blank" rel="noopener">+252 90 714 4517</a>
+        </div>
+        <div class="row">
+          <span class="label">Email</span>
+          <a class="value" href="mailto:xdata.lab@gmail.com">xdata.lab@gmail.com</a>
+        </div>
+        <div class="row">
+          <span class="label">Availability</span>
+          <span class="value">Day &amp; night shift, 24 hours</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo-lockup">
+          <svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true">
+            <g opacity="0.9">
+              <rect x="10" y="46" width="7" height="7" fill="#6FA8DC" opacity="0.35"/>
+              <rect x="20" y="34" width="9" height="9" fill="#6FA8DC" opacity="0.55"/>
+              <rect x="14" y="60" width="8" height="8" fill="#3C7DC2" opacity="0.6"/>
+              <rect x="30" y="46" width="12" height="12" fill="#6FA8DC" opacity="0.85"/>
+              <rect x="22" y="70" width="8" height="8" fill="#3C7DC2" opacity="0.8"/>
+              <rect x="34" y="62" width="10" height="10" fill="#3C7DC2"/>
+            </g>
+            <path d="M40 18 L58 18 L72 40 L86 18 L100 18 L79 50 L100 82 L86 82 L72 60 L58 82 L44 82 L65 50 Z" fill="#FFFFFF"/>
+            <path d="M72 60 L86 82 L100 82 L79 50 Z" fill="#3C7DC2"/>
+          </svg>
+          <div class="wordmark">XDATA<span>SOFT</span></div>
+        </div>
+        <div class="footer-tagline"><span class="rule"></span>BUILD · DEPLOY · SUPPORT<span class="rule"></span></div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#shifts">Shifts</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="https://wa.me/252907144517" target="_blank" rel="noopener">WhatsApp</a>
+          <a href="mailto:xdata.lab@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© <span id="year"></span> XData Soft — part of the XData family.</div>
+      <div>Web Apps · Custom Software · Systems · Marketing</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const sunIcon = '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="12" y1="1.5" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22.5" y2="12"/><line x1="4.4" y1="4.4" x2="6.5" y2="6.5"/><line x1="17.5" y1="17.5" x2="19.6" y2="19.6"/><line x1="4.4" y1="19.6" x2="6.5" y2="17.5"/><line x1="17.5" y1="6.5" x2="19.6" y2="4.4"/></g></svg>';
+  const moonIcon = '<svg viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" fill="currentColor"/></svg>';
+
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('theme-toggle');
+
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    if(theme === 'dark'){
+      themeToggle.innerHTML = sunIcon;
+      themeToggle.style.color = 'var(--blue-light)';
+      themeToggle.setAttribute('aria-label','Switch to day view');
+    } else {
+      themeToggle.innerHTML = moonIcon;
+      themeToggle.style.color = 'var(--blue)';
+      themeToggle.setAttribute('aria-label','Switch to night view');
+    }
+  }
+
+  let savedTheme = 'light';
+  try{
+    savedTheme = localStorage.getItem('xdata-soft-theme')
+      || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }catch(e){}
+  applyTheme(savedTheme);
+
+  themeToggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try{ localStorage.setItem('xdata-soft-theme', next); }catch(e){}
+  });
+
+  function tick(){
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('clock').textContent = `${hh}:${mm}:${ss}`;
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  const navToggle = document.getElementById('nav-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const navToggleIcon = document.getElementById('nav-toggle-icon');
+  const hamburgerPaths = '<line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="14" x2="21" y2="14"/><line x1="3" y1="21" x2="21" y2="21"/>';
+  const closePaths = '<line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/>';
+
+  navToggle.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+    navToggleIcon.innerHTML = isOpen ? closePaths : hamburgerPaths;
+  });
+
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggleIcon.innerHTML = hamburgerPaths;
+    });
+  });
+
+  const qcMessage = document.getElementById('qc-message');
+  const defaultMessage = "Hi XData Soft, I'd like to talk about a project.";
+
+  document.getElementById('qc-whatsapp').addEventListener('click', () => {
+    const text = qcMessage.value.trim() || defaultMessage;
+    window.open(`https://wa.me/252907144517?text=${encodeURIComponent(text)}`, '_blank');
+  });
+
+  document.getElementById('qc-email').addEventListener('click', () => {
+    const text = qcMessage.value.trim() || defaultMessage;
+    window.location.href = `mailto:xdata.lab@gmail.com?subject=${encodeURIComponent('Project inquiry')}&body=${encodeURIComponent(text)}`;
+  });
+</script>
+
+</body>
+</html>
